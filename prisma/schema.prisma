@@ -15,6 +15,7 @@ model User {
   email     String   @unique
   password  String
   name      String
+  role      Role     @default(User)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -34,4 +35,9 @@ model Event {
 enum EventStatus {
   Ongoing
   Completed
+}
+
+enum Role {
+  User
+  Admin
 }
