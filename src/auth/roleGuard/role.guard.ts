@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtPayload } from 'src/types/jwtPayload.interface';
+import { JwtPayload } from 'src/types/jwt-payload.interface';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

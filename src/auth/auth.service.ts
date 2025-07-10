@@ -2,7 +2,7 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from 'src/types/jwtPayload.interface';
+import { JwtPayload } from 'src/types/jwt-payload.interface';
 import { Role } from '@prisma/client';
 
 @Injectable()
