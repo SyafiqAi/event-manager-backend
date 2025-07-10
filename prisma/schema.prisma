@@ -18,3 +18,20 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Event {
+  id        Int         @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  location  String
+  posterUrl String
+  status    EventStatus @default(Ongoing)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+enum EventStatus {
+  Ongoing
+  Completed
+}
