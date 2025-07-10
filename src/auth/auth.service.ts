@@ -2,6 +2,7 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/types/jwtPayload.interface';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload: JwtPayload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
