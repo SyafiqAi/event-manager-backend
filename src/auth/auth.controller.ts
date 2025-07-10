@@ -14,6 +14,7 @@ import { RolesGuard } from './roleGuard/role.guard';
 import { Roles } from './roleGuard/role.decorator';
 import { RegisterDto } from './dto/register.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
+  signIn(@Body() signInDto: LoginDto) {
     return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
