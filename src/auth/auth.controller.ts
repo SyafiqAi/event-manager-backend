@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { RolesGuard } from './roleGuard/role.guard';
+import { Roles } from './roleGuard/role.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +34,8 @@ export class AuthController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('User')
   @Get('profile')
   getProfile(@Request() req: any) {
     return req.user;
