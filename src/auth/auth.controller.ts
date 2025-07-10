@@ -12,6 +12,8 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { RolesGuard } from './roleGuard/role.guard';
 import { Roles } from './roleGuard/role.decorator';
+import { RegisterDto } from './dto/register.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -25,18 +27,19 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  register(@Body() signInDto: Record<string, any>) {
-    console.log(signInDto.email, signInDto.password, signInDto.name);
+  register(@Body() registerDto: RegisterDto) {
     return this.authService.register(
-      signInDto.email,
-      signInDto.password,
-      signInDto.name,
+      registerDto.email,
+      registerDto.password,
+      registerDto.name,
+      registerDto.role,
     );
   }
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('User')
   @Get('profile')
+  @ApiBearerAuth()
   getProfile(@Request() req: any) {
     return req.user;
   }
