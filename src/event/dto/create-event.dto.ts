@@ -21,11 +21,6 @@ export class CreateEventDto {
   @IsString()
   location: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  posterUrl: string;
-
   @ApiProperty({ enum: EventStatus })
   @IsEnum(EventStatus)
   status: EventStatus;
