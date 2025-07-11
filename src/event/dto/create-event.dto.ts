@@ -10,11 +10,11 @@ export class CreateEventDto {
 
   @ApiProperty()
   @IsDateString()
-  startDate: string;
+  startDate: Date;
 
   @ApiProperty()
   @IsDateString()
-  endDate: string;
+  endDate: Date;
 
   @ApiProperty()
   @IsNotEmpty()
