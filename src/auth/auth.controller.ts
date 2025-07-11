@@ -13,9 +13,10 @@ import { AuthService } from './auth.service';
 import { RolesGuard } from './roleGuard/role.guard';
 import { Roles } from './roleGuard/role.decorator';
 import { RegisterDto } from './dto/register.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
