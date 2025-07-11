@@ -32,6 +32,6 @@ export class EventService {
   }
 
   remove(@Param('id') id: number) {
-    return undefined;
+    return this.prismaService.event.delete({ where: { id } });
   }
 }
