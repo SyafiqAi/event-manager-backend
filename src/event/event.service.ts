@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { GetEventsQueryDto } from './dto/get-events-query.dto';
 import { contains } from 'class-validator';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EventService {
@@ -16,35 +17,31 @@ export class EventService {
     const limit = query.limit ? query.limit : 10;
     const skip = (page - 1) * limit;
 
+    const where: Prisma.EventWhereInput = {
+      status: query.status,
+      startDate: query.fromDate ? { gte: query.fromDate } : undefined,
+      endDate: query.toDate ? { lte: query.toDate } : undefined,
+      AND: {
+        name: query.search
+          ? { contains: query.search, mode: 'insensitive' }
+          : undefined,
+      },
+    };
+
+    const orderBy: Prisma.Enumerable<Prisma.EventOrderByWithRelationInput> =
+      query.sortBy
+        ? { [query.sortBy]: query.sortOrder || 'asc' }
+        : { startDate: 'asc' }; // default sort
+
     const [data, total] = await this.prismaService.$transaction([
       this.prismaService.event.findMany({
-        where: {
-          status: query.status,
-          startDate: query.fromDate ? { gte: query.fromDate } : undefined,
-          endDate: query.toDate ? { lte: query.toDate } : undefined,
-          AND: {
-            name: query.search
-              ? { contains: query.search, mode: 'insensitive' }
-              : undefined,
-          },
-        },
+        where,
         skip,
         take: limit,
-        orderBy: {
-          startDate: 'asc',
-        },
+        orderBy,
       }),
       this.prismaService.event.count({
-        where: {
-          status: query.status,
-          startDate: query.fromDate ? { gte: query.fromDate } : undefined,
-          endDate: query.toDate ? { lte: query.toDate } : undefined,
-          AND: {
-            name: query.search
-              ? { contains: query.search, mode: 'insensitive' }
-              : undefined,
-          },
-        },
+        where,
       }),
     ]);
 

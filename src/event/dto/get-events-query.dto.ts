@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { EventStatus } from '@prisma/client';
 import { IsOptional, IsEnum, IsDateString, IsString } from 'class-validator';
+import { SortOrder } from 'src/types/enums/sort-order.enum';
 
 export class GetEventsQueryDto {
   @ApiPropertyOptional({ type: String })
@@ -30,4 +31,21 @@ export class GetEventsQueryDto {
   @ApiPropertyOptional({ type: Number })
   @IsOptional()
   limit?: number;
+
+  @ApiPropertyOptional({
+    type: String,
+    description: 'Sort by field (e.g. name, startDate, endDate)',
+    enum: ['name', 'startDate', 'endDate', 'location'],
+  })
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
+  @ApiPropertyOptional({
+    enum: SortOrder,
+    description: 'Sort order (asc or desc)',
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  sortOrder?: SortOrder;
 }
