@@ -26,6 +26,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt'
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthRequest } from 'src/types/auth-request.interface';
+import { Roles } from 'src/auth/roleGuard/role.decorator';
+import { RolesGuard } from 'src/auth/roleGuard/role.guard';
 
 @ApiTags('Events')
 @Controller('events')
@@ -35,12 +37,18 @@ export class EventController {
     private readonly prismaService: PrismaService,
   ) {}
 
+  @UseGuards(AuthGuard)
+  @Roles('Admin')
+  @ApiBearerAuth()
   @Post()
   @ApiBody({ type: CreateEventDto })
   create(@Body() dto: CreateEventDto) {
     return this.eventService.create(dto);
   }
 
+  @UseGuards(AuthGuard)
+  @Roles('Admin')
+  @ApiBearerAuth()
   @Post(':id/poster')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -83,22 +91,32 @@ export class EventController {
     return { message: 'Poster uploaded successfully', posterUrl };
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('Admin', 'User')
+  @ApiBearerAuth()
   @Get()
   findAll(@Query() query: GetEventsQueryDto) {
     return this.eventService.findAll(query);
   }
 
+  @UseGuards(AuthGuard)
+  @Roles('Admin', 'User')
+  @ApiBearerAuth()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.eventService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
+  @Roles('Admin')
+  @ApiBearerAuth()
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventService.update(+id, dto);
   }
 
   @UseGuards(AuthGuard)
+  @Roles('Admin')
   @ApiBearerAuth()
   @Delete(':id')
   async remove(
