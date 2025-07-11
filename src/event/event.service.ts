@@ -20,8 +20,8 @@ export class EventService {
   }
 
   async findAll(query: GetEventsQueryDto) {
-    const page = query.page ? query.page : 1;
-    const limit = query.limit ? query.limit : 10;
+    const page = query.page ? Number(query.page) : 1;
+    const limit = query.limit ? Number(query.limit) : 10;
     const skip = (page - 1) * limit;
 
     const where: Prisma.EventWhereInput = {
