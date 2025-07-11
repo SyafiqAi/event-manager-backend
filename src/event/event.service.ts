@@ -28,7 +28,7 @@ export class EventService {
   }
 
   update(@Param('id') id: number, @Body() dto: Partial<CreateEventDto>) {
-    return undefined;
+    return this.prismaService.event.update({ where: { id }, data: dto });
   }
 
   remove(@Param('id') id: number) {

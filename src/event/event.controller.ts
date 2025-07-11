@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @ApiTags("Events")
 @Controller('events')
@@ -25,7 +26,7 @@ export class EventController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: Partial<CreateEventDto>) {
+  update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
     return this.eventService.update(+id, dto);
   }
 
