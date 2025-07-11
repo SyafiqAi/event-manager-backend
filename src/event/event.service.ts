@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { GetEventsQueryDto } from './dto/get-events-query.dto';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class EventService {
@@ -21,6 +22,11 @@ export class EventService {
           status: query.status,
           startDate: query.fromDate ? { gte: query.fromDate } : undefined,
           endDate: query.toDate ? { lte: query.toDate } : undefined,
+          AND: {
+            name: query.search
+              ? { contains: query.search, mode: 'insensitive' }
+              : undefined,
+          },
         },
         skip,
         take: limit,
@@ -33,6 +39,11 @@ export class EventService {
           status: query.status,
           startDate: query.fromDate ? { gte: query.fromDate } : undefined,
           endDate: query.toDate ? { lte: query.toDate } : undefined,
+          AND: {
+            name: query.search
+              ? { contains: query.search, mode: 'insensitive' }
+              : undefined,
+          },
         },
       }),
     ]);
