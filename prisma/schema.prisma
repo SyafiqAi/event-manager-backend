@@ -26,7 +26,7 @@ model Event {
   startDate DateTime
   endDate   DateTime
   location  String
-  posterUrl String
+  posterUrl String?
   status    EventStatus @default(Ongoing)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
