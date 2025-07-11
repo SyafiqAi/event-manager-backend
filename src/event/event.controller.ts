@@ -25,6 +25,7 @@ import { DeleteEventDto } from './dto/delete-event.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt'
 import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthRequest } from 'src/types/auth-request.interface';
 
 @ApiTags('Events')
 @Controller('events')
@@ -101,7 +102,7 @@ export class EventController {
   @ApiBearerAuth()
   @Delete(':id')
   async remove(
-    @Req() req: any,
+    @Req() req: AuthRequest,
     @Param('id') id: string,
     @Body() dto: DeleteEventDto,
   ) {
