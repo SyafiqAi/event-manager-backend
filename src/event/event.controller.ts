@@ -7,22 +7,32 @@ import {
   Patch,
   Post,
   Query,
+  Req,
+  UnauthorizedException,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { CreateEventDto } from './dto/create-event.dto';
 import { GetEventsQueryDto } from './dto/get-events-query.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventService } from './event.service';
+import { DeleteEventDto } from './dto/delete-event.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt'
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Events')
 @Controller('events')
 export class EventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(
+    private readonly eventService: EventService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   @Post()
   @ApiBody({ type: CreateEventDto })
@@ -87,8 +97,30 @@ export class EventController {
     return this.eventService.update(+id, dto);
   }
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(
+    @Req() req: any,
+    @Param('id') id: string,
+    @Body() dto: DeleteEventDto,
+  ) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: req.user.sub },
+    });
+
+    if(!user) {
+      throw new UnauthorizedException();
+    }
+
+    const passwordMatches = await bcrypt.compare(
+      dto.password,
+      user.password,
+    );
+    if (!passwordMatches) {
+      throw new UnauthorizedException('Invalid password');
+    }
+
     return this.eventService.remove(+id);
   }
 }
