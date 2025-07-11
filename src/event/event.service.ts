@@ -24,7 +24,7 @@ export class EventService {
   }
 
   findOne(@Param('id') id: number) {
-    return undefined;
+    return this.prismaService.event.findUnique({ where: { id } });
   }
 
   update(@Param('id') id: number, @Body() dto: Partial<CreateEventDto>) {
