@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { GetEventsQueryDto } from './dto/get-events-query.dto';
 
 @ApiTags("Events")
 @Controller('events')
@@ -16,8 +17,8 @@ export class EventController {
   }
 
   @Get()
-  findAll() {
-    return this.eventService.findAll();
+  findAll(@Query() query: GetEventsQueryDto) {
+    return this.eventService.findAll(query);
   }
 
   @Get(':id')
