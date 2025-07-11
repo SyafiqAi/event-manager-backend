@@ -12,6 +12,13 @@ export class EventService {
     return this.prismaService.event.create({ data: dto });
   }
 
+  updatePoster(id: number, posterUrl: string) {
+    return this.prismaService.event.update({
+      where: { id },
+      data: { posterUrl },
+    });
+  }
+
   async findAll(query: GetEventsQueryDto) {
     const page = query.page ? query.page : 1;
     const limit = query.limit ? query.limit : 10;
