@@ -1,4 +1,4 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { EventStatus } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -21,7 +21,8 @@ export class CreateEventDto {
   @IsString()
   location: string;
 
-  @ApiProperty({ enum: EventStatus })
+  @ApiProperty({ enum: EventStatus, required: false })
+  @IsOptional()
   @IsEnum(EventStatus)
-  status: EventStatus;
+  status?: EventStatus;
 }
