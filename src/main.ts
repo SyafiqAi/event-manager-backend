@@ -19,8 +19,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
-    .setTitle('Median')
-    .setDescription('The Median API description')
+    .setTitle('Event manager')
+    // .setDescription('Event manager API description')
     .setVersion('0.1')
     .addBearerAuth({
       type: 'http',
