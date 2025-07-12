@@ -28,11 +28,12 @@ export class EventService {
       status: query.status,
       startDate: query.fromDate ? { gte: query.fromDate } : undefined,
       endDate: query.toDate ? { lte: query.toDate } : undefined,
-      AND: {
-        name: query.search
-          ? { contains: query.search, mode: 'insensitive' }
-          : undefined,
-      },
+      ...(query.search && {
+        OR: [
+          { name: { contains: query.search, mode: 'insensitive' } },
+          { location: { contains: query.search, mode: 'insensitive' } },
+        ],
+      }),
     };
 
     const orderBy: Prisma.Enumerable<Prisma.EventOrderByWithRelationInput> =
