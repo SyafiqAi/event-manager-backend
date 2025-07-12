@@ -37,7 +37,7 @@ export class EventController {
     private readonly prismaService: PrismaService,
   ) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('Admin')
   @ApiBearerAuth()
   @Post()
@@ -46,7 +46,7 @@ export class EventController {
     return this.eventService.create(dto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('Admin')
   @ApiBearerAuth()
   @Post(':id/poster')
@@ -99,7 +99,7 @@ export class EventController {
     return this.eventService.findAll(query);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('Admin', 'User')
   @ApiBearerAuth()
   @Get(':id')
@@ -107,7 +107,7 @@ export class EventController {
     return this.eventService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('Admin')
   @ApiBearerAuth()
   @Patch(':id')
@@ -115,7 +115,7 @@ export class EventController {
     return this.eventService.update(+id, dto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles('Admin')
   @ApiBearerAuth()
   @Delete(':id')
