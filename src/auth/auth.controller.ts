@@ -8,13 +8,11 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-import { RolesGuard } from './roleGuard/role.guard';
-import { Roles } from './roleGuard/role.decorator';
-import { RegisterDto } from './dto/register.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -38,8 +36,7 @@ export class AuthController {
     );
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles('User')
+  @UseGuards(AuthGuard)
   @Get('profile')
   @ApiBearerAuth()
   getProfile(@Request() req: any) {
