@@ -1,6 +1,6 @@
-## Blog-Backend-REST-API-NestJS-Prisma 
+## Event manager
 
-A simple backend REST API for a blog built using NestJS, Prisma, PostgreSQL and Swagger. 
+A simple backend REST API for an event manager built using NestJS, Prisma, PostgreSQL and Swagger. 
 
 ### Installation
 
